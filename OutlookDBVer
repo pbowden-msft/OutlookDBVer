@@ -1,0 +1,109 @@
+#!/bin/sh
+#set -x
+
+TOOL_NAME="Microsoft Outlook 2016 Database Version"
+TOOL_VERSION="1.0"
+
+## Copyright (c) 2016 Microsoft Corp. All rights reserved.
+## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
+## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a 
+## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
+## Microsoft, its authors, or anyone else involved in the creation, production, or delivery of the scripts be liable for any damages whatsoever 
+## (including, without limitation, damages for loss of business profits, business interruption, loss of business information, or other pecuniary 
+## loss) arising out of the use of or inability to use the sample scripts or documentation, even if Microsoft has been advised of the possibility
+## of such damages.
+## Feedback: pbowden@microsoft.com
+
+# Constants
+OUTLOOK_DB="$HOME/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 Profiles/Main Profile/Data/Outlook.sqlite"
+
+function ShowUsage {
+# Shows tool usage and parameters
+	echo $TOOL_NAME - $TOOL_VERSION
+	echo "Purpose: Reports the version of the Outlook 2016 database"
+	echo "Usage: OutlookDBVer [--Get]"
+	echo
+	exit 0
+}
+
+function GetUserVersion {
+# Retrieves PRAGMA user_version UInt32 from SQLite database
+	local PRAGMAVER=$(sqlite3 "$OUTLOOK_DB" 'pragma user_version')
+	echo "$PRAGMAVER"
+}
+
+function ConvertInt2Bin {
+# Converts an integer to binary
+	local CINT="$1"
+	FBIN=$(echo "obase=2;$CINT" | bc)
+	echo "$FBIN"
+}
+
+function GetBits {
+# Returns the number of bits from a binary value
+	local CBIN="$1"
+	FBITS=$(echo ${#CBIN})
+	echo "$FBITS"
+}
+
+function GetMajorVersion {
+# Returns the major version of the database
+	local CVER="$1"
+	FMAJ=$(echo $(($CVER >> 16)))
+	echo "$FMAJ"
+}
+
+function GetMinorVersion {
+# Returns the minor version of the database
+	local CVER="$1"
+	local CBITS="$2"
+	FMIN=$(echo $(($CVER >> (($CBITS - 1)))))
+	echo "$FMIN"
+}
+
+# Evaluate command-line arguments
+if [[ $# = 0 ]]; then
+	ShowUsage
+else
+	for KEY in "$@"
+	do
+	case $KEY in
+    	--Help|-?|--help)
+    	ShowUsage
+    	shift # past argument
+    	;;
+    	--Get|-g|--get)
+    	shift # past argument
+    	;;
+    	*)
+    	ShowUsage
+    	;;
+	esac
+	shift # past argument or value
+	done
+fi
+
+## Main
+if [ -f "$OUTLOOK_DB" ]; then
+	USERVERSION=$(GetUserVersion)
+	if [ $USERVERSION -gt 0 ]; then
+		BINARYVERSION=$(ConvertInt2Bin "$USERVERSION")
+		BINLENGTH=$(GetBits "$BINARYVERSION")
+		MAJORVERSION=$(GetMajorVersion "$USERVERSION")
+		MINORVERSION=$(GetMinorVersion "$USERVERSION" "$BINLENGTH")
+		echo "Outlook Database: $OUTLOOK_DB"
+		echo "Database Version: $MAJORVERSION.$MINORVERSION"
+	else
+		echo "Outlook Database: $OUTLOOK_DB"
+		echo "Database version could not be determined"
+		echo
+		exit 1
+	fi
+else
+	echo "Outlook Database NOT FOUND: $OUTLOOK_DB"
+	echo
+	exit 1
+fi
+
+echo
+exit 0
