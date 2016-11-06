@@ -2,7 +2,7 @@
 #set -x
 
 TOOL_NAME="Microsoft Outlook 2016 Database Version"
-TOOL_VERSION="1.0"
+TOOL_VERSION="1.1"
 
 ## Copyright (c) 2016 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
@@ -21,7 +21,7 @@ function ShowUsage {
 # Shows tool usage and parameters
 	echo $TOOL_NAME - $TOOL_VERSION
 	echo "Purpose: Reports the version of the Outlook 2016 database"
-	echo "Usage: OutlookDBVer [--Get]"
+	echo "Usage: OutlookDBVer [--DefaultDB] [--Path:<path_to_Outlook.sqlite>]"
 	echo
 	exit 0
 }
@@ -39,13 +39,6 @@ function ConvertInt2Bin {
 	echo "$FBIN"
 }
 
-function GetBits {
-# Returns the number of bits from a binary value
-	local CBIN="$1"
-	FBITS=$(echo ${#CBIN})
-	echo "$FBITS"
-}
-
 function GetMajorVersion {
 # Returns the major version of the database
 	local CVER="$1"
@@ -56,8 +49,7 @@ function GetMajorVersion {
 function GetMinorVersion {
 # Returns the minor version of the database
 	local CVER="$1"
-	local CBITS="$2"
-	FMIN=$(echo $(($CVER >> (($CBITS - 1)))))
+	FMIN=$(echo $(($CVER%65536)))
 	echo "$FMIN"
 }
 
@@ -68,11 +60,15 @@ else
 	for KEY in "$@"
 	do
 	case $KEY in
-    	--Help|-?|--help)
+    	--Help|-h|--help)
     	ShowUsage
     	shift # past argument
     	;;
-    	--Get|-g|--get)
+    	--DefaultDB|-d|--defaultdb)
+    	shift # past argument
+    	;;
+    	--Path:*|-p:*|--path:*)
+	OUTLOOK_DB=${KEY#*:}
     	shift # past argument
     	;;
     	*)
@@ -88,9 +84,8 @@ if [ -f "$OUTLOOK_DB" ]; then
 	USERVERSION=$(GetUserVersion)
 	if [ $USERVERSION -gt 0 ]; then
 		BINARYVERSION=$(ConvertInt2Bin "$USERVERSION")
-		BINLENGTH=$(GetBits "$BINARYVERSION")
 		MAJORVERSION=$(GetMajorVersion "$USERVERSION")
-		MINORVERSION=$(GetMinorVersion "$USERVERSION" "$BINLENGTH")
+		MINORVERSION=$(GetMinorVersion "$USERVERSION")
 		echo "Outlook Database: $OUTLOOK_DB"
 		echo "Database Version: $MAJORVERSION.$MINORVERSION"
 	else
