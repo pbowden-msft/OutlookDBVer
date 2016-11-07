@@ -14,8 +14,10 @@ TOOL_VERSION="1.1"
 ## of such damages.
 ## Feedback: pbowden@microsoft.com
 
+PROFILE_NAME=$( defaults read "$HOME/Library/Group Containers/UBF8T346G9.Office/OutlookProfile.plist" Default_Profile_Name )
+
 # Constants
-OUTLOOK_DB="$HOME/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 Profiles/Main Profile/Data/Outlook.sqlite"
+OUTLOOK_DB="$HOME/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 Profiles/$PROFILE_NAME/Data/Outlook.sqlite"
 
 function ShowUsage {
 # Shows tool usage and parameters
