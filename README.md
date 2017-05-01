@@ -5,7 +5,7 @@ Purpose: Reports the version of the Outlook 2016 database</br>
 Usage: `OutlookDBVer [--DefaultDB] [--Path:<path_to_Outlook.sqlite>]`</br>
 
 Example output:</br>
-`Outlook Database: /Users/pbowden/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 Profiles/Main` `Profile/Data/Outlook.sqlite`</br>
+`Outlook Database: /Users/pbowden/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 Profiles/Main Profile/Data/Outlook.sqlite`</br>
 `Database Version: 26.0`</br>
 
 <b>Database Version History</b></br>
