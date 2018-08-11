@@ -1,10 +1,10 @@
 #!/bin/sh
 #set -x
 
-TOOL_NAME="Microsoft Outlook 2016 Database Version"
-TOOL_VERSION="1.1"
+TOOL_NAME="Microsoft Outlook 2019/2016 Database Version"
+TOOL_VERSION="1.2"
 
-## Copyright (c) 2016 Microsoft Corp. All rights reserved.
+## Copyright (c) 2018 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a 
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -22,7 +22,7 @@ OUTLOOK_DB="$HOME/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 
 function ShowUsage {
 # Shows tool usage and parameters
 	echo $TOOL_NAME - $TOOL_VERSION
-	echo "Purpose: Reports the version of the Outlook 2016 database"
+	echo "Purpose: Reports the version of the Outlook 2019/2016 database"
 	echo "Usage: OutlookDBVer [--DefaultDB] [--Path:<path_to_Outlook.sqlite>]"
 	echo
 	exit 0

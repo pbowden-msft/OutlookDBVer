@@ -1,7 +1,7 @@
 # OutlookDBVer
-<b>Microsoft Outlook 2016 Database Version</b>
+<b>Microsoft Outlook 2019/2016 Database Version</b>
 
-Purpose: Reports the version of the Outlook 2016 database</br>
+Purpose: Reports the version of the Outlook 2019/2016 database</br>
 Usage: `OutlookDBVer [--DefaultDB] [--Path:<path_to_Outlook.sqlite>]`</br>
 
 Example output:</br>
