@@ -1,7 +1,7 @@
 # OutlookDBVer
-<b>Microsoft Outlook 365/2019/2016 Database Version</b>
+<b>Microsoft Outlook 365/2021/2019/2016 Database Version</b>
 
-Purpose: Reports the version of the Outlook 365/2019/2016 database</br>
+Purpose: Reports the version of the Outlook 365/2021/2019/2016 database</br>
 Usage: `OutlookDBVer [--DefaultDB] [--Path:<path_to_Outlook.sqlite>]`</br>
 
 Example output:</br>
@@ -24,4 +24,4 @@ Example output:</br>
 `35.1` = 16.13 thru 16.14</br>
 `35.2` = 16.15 thru 16.26</br>
 `36.0` = 16.27 thru 16.40</br>
-`37.0` = 16.41 thru 16.52</br>
+`37.0` = 16.41 thru 16.56</br>
